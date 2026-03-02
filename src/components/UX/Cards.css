@@ -1,0 +1,26 @@
+.cards {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    margin-top: 16px;
+    user-select: none;
+}
+
+.card {
+    cursor: pointer;
+    padding: 10px;
+    border: 3px solid #e6b421;
+    border-radius: 30px;
+    transition: 0.6s ease;
+}
+
+.card img {
+    width: 200px;
+    height: 200px;
+    border-radius: 20px;
+}
+
+.card:hover {
+    transform: scale(1.06);
+}

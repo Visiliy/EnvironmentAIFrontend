@@ -1,0 +1,19 @@
+.chat-wrapper-container {
+    position: absolute;
+    top: 65%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 50%;
+    text-align: center;
+}
+
+.chat-wrapper-container p {
+    color: #e6b421;
+    margin-bottom: 20px;
+}
+
+@media (max-width: 868px) {
+    .chat-wrapper-container {
+        width: 90%;
+    }
+}
