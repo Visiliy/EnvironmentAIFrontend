@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import './App.css'
 import Main from './pages/Main';
 import Workspace from './pages/Workspace';
+import Authorization from './pages/Authorization';
 
 function App() {
   
@@ -12,6 +13,7 @@ function App() {
         <Routes>
           <Route path='/' element={<Main />}/>
           <Route path='/workspace' element={<Workspace />} />
+          <Route path='/authorization' element={<Authorization />} />
         </Routes>
       </BrowserRouter>
     </>

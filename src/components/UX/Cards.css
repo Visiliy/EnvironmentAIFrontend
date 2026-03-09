@@ -9,15 +9,18 @@
 
 .card {
     cursor: pointer;
-    padding: 10px;
-    border: 3px solid #e6b421;
     border-radius: 30px;
     transition: 0.6s ease;
+    background-color: #333;
+}
+
+.card p {
+    margin-top: 10px;
 }
 
 .card img {
-    width: 200px;
-    height: 200px;
+    width: 220px;
+    height: 220px;
     border-radius: 20px;
 }
 
