@@ -1,15 +1,34 @@
 import { useState, useRef } from 'react';
 import './Authorization.css';
+import { AuthorizationService } from '../services/AuthorizationService';
 
 const Authorization = () => {
     const [activeTab, setActiveTab] = useState('login');
     const [showCode, setShowCode] = useState(false);
     const [code, setCode] = useState(['', '', '', '', '']);
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [error, setError] = useState('');
     const inputRefs = useRef([]);
+    const authService = new AuthorizationService;
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        setShowCode(true);
+        setError('');
+        
+        let response;
+        if (activeTab === 'login') {
+            response = await authService.login(email, password);
+        } else {
+            response = await authService.register(email, password);
+        }
+        
+        if (response.success) {
+            await authService.sendCode();
+            setShowCode(true);
+        } else {
+            setError(response.error || 'Ошибка авторизации');
+        }
     };
 
     const handleCodeChange = (index, value) => {
@@ -30,9 +49,18 @@ const Authorization = () => {
         }
     };
 
+    const handleVerify = async () => {
+        const response = await authService.verifyCode(code);
+        if (response.success) {
+            window.location.href = '/workspace';
+        } else {
+            setError('Неверный код подтверждения');
+        }
+    };
+
     return (
         <div className="auth-page">
-            <button className="back-home">На главную</button>
+            <button className="back-home" onClick={() => window.location.href = '/'}>На главную</button>
             <div className="auth-center">
                 {!showCode ? (
                     <div className="auth-box">
@@ -50,9 +78,22 @@ const Authorization = () => {
                                 Регистрация
                             </button>
                         </div>
+                        {error && <div className="error-message">{error}</div>}
                         <form onSubmit={handleSubmit} className="input-group">
-                            <input type="email" placeholder="Email" required />
-                            <input type="password" placeholder="Пароль" required />
+                            <input 
+                                type="email" 
+                                placeholder="Email" 
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
+                                required 
+                            />
+                            <input 
+                                type="password" 
+                                placeholder="Пароль" 
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
+                                required 
+                            />
                             <button type="submit" className="action-btn">
                                 {activeTab === 'login' ? 'Войти' : 'Зарегистрироваться'}
                             </button>
@@ -74,7 +115,8 @@ const Authorization = () => {
                                 />
                             ))}
                         </div>
-                        <button className="action-btn">Подтвердить</button>
+                        {error && <div className="error-message">{error}</div>}
+                        <button className="action-btn" onClick={handleVerify}>Подтвердить</button>
                     </div>
                 )}
             </div>

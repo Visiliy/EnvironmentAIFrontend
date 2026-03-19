@@ -86,3 +86,71 @@
     background: #e6b421;
     border-radius: 4px;
 }
+
+.files-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 10px;
+    max-width: 100%;
+}
+
+.file-chip {
+    display: inline-flex;
+    align-items: center;
+    background-color: #333;
+    border: 1px solid #e6b421;
+    border-radius: 12px;
+    padding: 4px 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    max-width: 100%;
+}
+
+.file-chip:hover {
+    background-color: #e6b421;
+}
+
+.file-chip:hover .file-name {
+    color: #333;
+}
+
+.file-chip:hover .file-remove {
+    color: #333;
+}
+
+.file-name {
+    color: #e6b421;
+    font-size: 14px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 200px;
+    transition: color 0.3s ease;
+}
+
+.file-remove {
+    color: #e6b421;
+    margin-left: 6px;
+    font-size: 18px;
+    font-weight: bold;
+    transition: color 0.3s ease;
+}
+
+@media (max-width: 768px) {
+    .file-name {
+        max-width: 150px;
+        font-size: 13px;
+    }
+}
+
+@media (max-width: 480px) {
+    .file-name {
+        max-width: 120px;
+        font-size: 12px;
+    }
+    
+    .file-chip {
+        padding: 3px 10px;
+    }
+}

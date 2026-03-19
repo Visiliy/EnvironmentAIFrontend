@@ -3,6 +3,7 @@ import './App.css'
 import Main from './pages/Main';
 import Workspace from './pages/Workspace';
 import Authorization from './pages/Authorization';
+import Account from './pages/Account';
 
 function App() {
   
@@ -14,6 +15,7 @@ function App() {
           <Route path='/' element={<Main />}/>
           <Route path='/workspace' element={<Workspace />} />
           <Route path='/authorization' element={<Authorization />} />
+          <Route path='/account' element={<Account />} />
         </Routes>
       </BrowserRouter>
     </>

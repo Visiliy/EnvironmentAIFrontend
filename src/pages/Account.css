@@ -1,0 +1,123 @@
+.account-page {
+    min-height: 100vh;
+    position: relative;
+}
+
+.workspace-btn {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    padding: 10px 24px;
+    background-color: transparent;
+    color: #e6b421;
+    border: 1px solid #e6b421;
+    border-radius: 16px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: all 0.3s ease;
+}
+
+.workspace-btn:hover {
+    background-color: #e6b421;
+    color: #333;
+}
+
+.account-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
+}
+
+.account-card {
+    background-color: #333;
+    border: 2px solid #e6b421;
+    border-radius: 30px;
+    padding: 40px;
+    width: 100%;
+    max-width: 500px;
+    text-align: center;
+}
+
+.account-email {
+    color: #e6b421;
+    font-size: 24px;
+    margin-bottom: 30px;
+    word-break: break-all;
+}
+
+.account-actions {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.logout-btn, .delete-btn {
+    padding: 12px 30px;
+    border: none;
+    border-radius: 16px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: all 0.3s ease;
+    min-width: 140px;
+}
+
+.logout-btn {
+    background-color: #333;
+    color: #e6b421;
+    border: 1px solid #e6b421;
+}
+
+.logout-btn:hover {
+    background-color: #e6b421;
+    color: #333;
+}
+
+.delete-btn {
+    background-color: #333;
+    color: #ff4444;
+    border: 1px solid #ff4444;
+}
+
+.delete-btn:hover {
+    background-color: #ff4444;
+    color: #333;
+}
+
+@media (max-width: 768px) {
+    .account-card {
+        padding: 30px 20px;
+    }
+    
+    .account-email {
+        font-size: 20px;
+    }
+    
+    .account-actions {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .logout-btn, .delete-btn {
+        width: 100%;
+    }
+    
+    .workspace-btn {
+        top: 10px;
+        right: 10px;
+        padding: 8px 20px;
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 480px) {
+    .account-card {
+        padding: 25px 15px;
+    }
+    
+    .account-email {
+        font-size: 18px;
+    }
+}

@@ -7,7 +7,7 @@ const ChatsWrapper = () => {
     return (
         <div className="chat-wrapper-container">
             <p>ЛЮДИ, ДАННЫЕ И ТЕХНОЛОГИИ — ЕДИНОЕ ЦЕЛОЕ</p>
-            <Chat />
+            <Chat placeholder={"Задайте любой вопрос о сервисе..."}/>
             <Cards />
         </div>
     );
