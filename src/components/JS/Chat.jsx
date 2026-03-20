@@ -27,7 +27,7 @@ const Chat = ({ placeholder, onSendMessage, currentChatId }) => {
         setTimeout(adjustHeight, 0);
     };
 
-    const handleFileSelect = async (e) => {
+    const handleFileSelect = (e) => {
         const selectedFiles = Array.from(e.target.files);
         const allowedTypes = ['.txt', '.docx', '.pdf'];
         
@@ -46,36 +46,11 @@ const Chat = ({ placeholder, onSendMessage, currentChatId }) => {
         
         setFiles(newFiles.slice(0, 10));
         
-        if (validFiles.length > 0) {
-            const formData = new FormData();
-            validFiles.slice(0, 10 - files.length).forEach(file => {
-                formData.append('files', file);
-            });
-            
-            const token = localStorage.getItem('token');
-            await fetch('http://localhost:5071/workspace/upload', {
-                method: 'POST',
-                headers: {
-                    'Authorization': `Bearer ${token}`
-                },
-                body: formData
-            });
-        }
-        
         fileInputRef.current.value = '';
     };
 
-    const removeFile = async (index) => {
-        const fileToRemove = files[index];
+    const removeFile = (index) => {
         setFiles(files.filter((_, i) => i !== index));
-        
-        const token = localStorage.getItem('token');
-        await fetch(`http://localhost:5071/workspace/documents/${encodeURIComponent(fileToRemove.name)}`, {
-            method: 'DELETE',
-            headers: {
-                'Authorization': `Bearer ${token}`
-            }
-        });
     };
 
     const truncateFileName = (fileName) => {

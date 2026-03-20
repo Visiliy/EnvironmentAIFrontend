@@ -2,6 +2,8 @@ import Cap from "../components/JS/Cap";
 import Chat from "../components/JS/Chat";
 import "./Workspace.css";
 import { useState, useEffect, useRef } from "react";
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 
 const Workspace = () => {
     const [activeTab, setActiveTab] = useState("chats");
@@ -46,7 +48,7 @@ const Workspace = () => {
         createInitialChat();
     }, []);
 
-    const handleSendMessage = async (message, files) => {
+    const handleSendMessage = async (message, files, chatId) => {
         if (!message.trim() && files.length === 0) return;
 
         const userMessage = {
@@ -59,7 +61,7 @@ const Workspace = () => {
         setIsLoading(true);
 
         const token = localStorage.getItem('token');
-        const response = await fetch(`http://localhost:5071/chats/${currentChatId}/generate`, {
+        const response = await fetch('http://localhost:5071/workspace', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -67,7 +69,7 @@ const Workspace = () => {
             },
             body: JSON.stringify({ 
                 user_query: message,
-                parent_node_id: null
+                chat_id: currentChatId
             })
         });
 
@@ -80,7 +82,21 @@ const Workspace = () => {
             if (done) break;
             
             const chunk = decoder.decode(value);
-            aiResponse += chunk;
+            
+            try {
+                const jsonEnd = chunk.lastIndexOf('}');
+                if (jsonEnd !== -1 && jsonEnd === chunk.length - 1) {
+                    const jsonStr = chunk.substring(chunk.lastIndexOf('{'), jsonEnd + 1);
+                    const metadata = JSON.parse(jsonStr);
+                    if (metadata.chat_id) {
+                        setCurrentChatId(metadata.chat_id);
+                    }
+                } else {
+                    aiResponse += chunk;
+                }
+            } catch {
+                aiResponse += chunk;
+            }
             
             setMessages(prev => {
                 const lastMessage = prev[prev.length - 1];
@@ -135,7 +151,23 @@ const Workspace = () => {
                                                 ))}
                                             </div>
                                         )}
-                                        <div className="message-text">{msg.text}</div>
+                                        <div className="message-text markdown-body">
+                                            <ReactMarkdown 
+                                                remarkPlugins={[remarkGfm]}
+                                                components={{
+                                                    a: ({node, ...props}) => (
+                                                        <a {...props} target="_blank" rel="noopener noreferrer" />
+                                                    ),
+                                                    code: ({node, inline, ...props}) => (
+                                                        inline ? 
+                                                            <code {...props} /> : 
+                                                            <pre><code {...props} /></pre>
+                                                    )
+                                                }}
+                                            >
+                                                {msg.text}
+                                            </ReactMarkdown>
+                                        </div>
                                     </div>
                                 </div>
                             ))}
@@ -152,6 +184,7 @@ const Workspace = () => {
                             <Chat 
                                 placeholder={"Задайте любой вопрос..."}
                                 onSendMessage={handleSendMessage}
+                                currentChatId={currentChatId}
                             />
                         </div>
                     </div>
