@@ -32,9 +32,9 @@ const Cap = () => {
 
     return (
         <div className="cap-container">
-            <div className="logo-wrapper">
+            <div className="logo-wrapper" style={isWorkspace ? { marginLeft: '-12px' } : {}}>
                 <img src="src/assets/logo.jpg" alt="logo" />
-                <p>Environment AI</p>
+                <p>ENVIRONMENT</p>
             </div>
             <button onClick={handleClick}>
                 {getButtonText()}

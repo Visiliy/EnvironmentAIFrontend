@@ -113,7 +113,7 @@ const Workspace = () => {
 
     return (
         <>
-            <div className="main-workspace">
+            <div className="main-workspace workspace-page">
                 <Cap />
                 <div className="workspace">
                     <div className="left-workspace">
