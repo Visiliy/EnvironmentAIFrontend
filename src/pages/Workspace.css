@@ -3,23 +3,10 @@
 }
 
 .workspace-page .cap-container {
-    position: relative;
     display: flex;
     justify-content: flex-end;
     align-items: center;
     min-height: 100px;
-}
-
-.workspace-page .logo-wrapper {
-    position: absolute;
-    left: calc(20px + 15vw);
-    transform: translateX(-50%);
-}
-
-@media (max-width: 876px) {
-    .workspace-page .logo-wrapper {
-        left: calc(20px + 25vw);
-    }
 }
 
 .workspace {

@@ -4,10 +4,10 @@ import "./Main.css";
 
 const Main = () => {
     return (
-        <>
+        <div className="main-page">
            <Cap />
            <ChatsWrapper />
-        </>
+        </div>
     );
 };
 
