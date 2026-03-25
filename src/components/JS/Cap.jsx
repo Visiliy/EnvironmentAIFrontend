@@ -35,7 +35,7 @@ const Cap = () => {
             {!isWorkspace && (
                 <div className="logo-wrapper">
                     <img src="src/assets/logo.jpg" alt="logo" />
-                    <p>ENVIRONMENT</p>
+                    <p>Environment</p>
                 </div>
             )}
             <button onClick={handleClick}>
