@@ -145,8 +145,32 @@ const Main = () => {
             <div className="main-history" ref={historyRef}>
                 <div className="main-history-inner">
                     {messages.map((msg) => (
-                        <div key={msg.id} className={`main-message ${msg.type}`}>
-                            <div className="main-message-text markdown-body">
+                        <div
+                            key={msg.id}
+                            className={`main-message ${msg.type}`}
+                            style={
+                                msg.type === "user"
+                                    ? {
+                                          alignSelf: "flex-end",
+                                          display: "flex",
+                                          justifyContent: "flex-end",
+                                      }
+                                    : undefined
+                            }
+                        >
+                            <div
+                                className="main-message-text markdown-body"
+                                style={
+                                    msg.type === "user"
+                                        ? {
+                                            display: "inline-block",
+                                            maxWidth: "70%",
+                                            textAlign: "right",
+                                            overflowWrap: "anywhere",
+                                        }
+                                        : undefined
+                                }
+                            >
                                 {msg.type === "ai" && !msg.text && isLoading ? (
                                     <div className="main-typing-indicator">...</div>
                                 ) : (

@@ -60,7 +60,7 @@
 .main-message.user .main-message-text {
     background-color: #333;
     color: #e6b421;
-    padding: 12px 16px;
+    padding: 12px;
     border-radius: 16px;
 }
 
@@ -126,6 +126,21 @@
 
 .main-message-text li {
     margin: 0 0 6px 0;
+}
+
+/* Make the last markdown block inside user bubble not add extra bottom space */
+.main-message.user .main-message-text p:last-child {
+    margin-bottom: 0;
+}
+
+.main-message.user .main-message-text ul:last-child,
+.main-message.user .main-message-text ol:last-child,
+.main-message.user .main-message-text pre:last-child,
+.main-message.user .main-message-text h1:last-child,
+.main-message.user .main-message-text h2:last-child,
+.main-message.user .main-message-text h3:last-child,
+.main-message.user .main-message-text h4:last-child {
+    margin-bottom: 0;
 }
 
 .main-message-text pre {
