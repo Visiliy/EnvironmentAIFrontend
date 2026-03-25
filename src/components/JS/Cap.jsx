@@ -1,33 +1,35 @@
-import { useState, useEffect } from 'react';
+import { useMemo } from "react";
 import "../UX/Cap.css";
 
-const Cap = () => {
-    const [isVerified, setIsVerified] = useState(false);
-    const [isWorkspace, setIsWorkspace] = useState(false);
+const parseUserData = () => {
+    const userData = localStorage.getItem("userData");
+    if (!userData) return {};
+    try {
+        return JSON.parse(userData);
+    } catch {
+        return {};
+    }
+};
 
-    useEffect(() => {
-        const userData = localStorage.getItem('userData');
-        if (userData) {
-            const parsed = JSON.parse(userData);
-            setIsVerified(parsed.verified || false);
-        }
-        setIsWorkspace(window.location.pathname === '/workspace');
-    }, []);
+const Cap = () => {
+    const userData = useMemo(() => parseUserData(), []);
+    const isVerified = Boolean(userData.verified);
+    const isWorkspace = window.location.pathname === "/workspace";
 
     const handleClick = () => {
         if (isWorkspace) {
-            window.location.href = '/account';
+            window.location.href = "/account";
         } else if (isVerified) {
-            window.location.href = '/workspace';
+            window.location.href = "/workspace";
         } else {
-            window.location.href = '/authorization';
+            window.location.href = "/authorization";
         }
     };
 
     const getButtonText = () => {
-        if (isWorkspace) return 'Аккаунт';
-        if (isVerified) return 'Workspace';
-        return 'Войти';
+        if (isWorkspace) return "Аккаунт";
+        if (isVerified) return "Workspace";
+        return "Войти";
     };
 
     return (

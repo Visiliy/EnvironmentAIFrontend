@@ -1,33 +1,50 @@
 .main-page {
     position: relative;
-    height: 100vh;
-    overflow: hidden;
+    height: 100dvh;
+    overflow-y: hidden;
+    overflow-x: hidden;
     display: block;
-}
-
-.main-history {
-    position: absolute;
-    inset: 0;
-    overflow-y: auto;
-    padding: 140px 16px 260px;
-    display: flex;
-    justify-content: center;
-    z-index: 20;
     scrollbar-width: thin;
     scrollbar-color: #e6b421 transparent;
 }
 
-.main-history::-webkit-scrollbar {
+.main-page.after-first {
+    overflow-y: auto;
+}
+
+.main-page.after-first .main-history {
+    padding-bottom: calc(var(--main-chat-height, 0px) + 36px);
+}
+
+.main-history {
+    position: relative;
+    overflow: visible;
+    padding: 140px 16px 0;
+    display: flex;
+    justify-content: center;
+    z-index: 20;
+}
+
+.main-page::-webkit-scrollbar {
     width: 8px;
 }
 
-.main-history::-webkit-scrollbar-track {
+.main-page::-webkit-scrollbar-track {
     background: transparent;
 }
 
-.main-history::-webkit-scrollbar-thumb {
+.main-page::-webkit-scrollbar-thumb {
     background: #e6b421;
     border-radius: 4px;
+}
+
+.main-page .cap-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    z-index: 70;
 }
 
 .main-history-inner {
@@ -52,6 +69,12 @@
     width: 100%;
 }
 
+.main-message.user {
+    align-self: flex-end;
+    display: flex;
+    justify-content: flex-end;
+}
+
 .main-message-text {
     line-height: 1.5;
     word-wrap: break-word;
@@ -62,12 +85,19 @@
     color: #e6b421;
     padding: 12px;
     border-radius: 16px;
+    display: inline-block;
+    width: fit-content;
+    max-width: 70%;
+    text-align: left;
+    overflow-wrap: anywhere;
 }
 
 .main-message.ai .main-message-text {
     background-color: transparent;
     color: #fff;
     padding: 0;
+    max-width: 70%;
+    overflow-wrap: anywhere;
 }
 
 .main-message.ai .main-message-text * {
@@ -128,7 +158,6 @@
     margin: 0 0 6px 0;
 }
 
-/* Make the last markdown block inside user bubble not add extra bottom space */
 .main-message.user .main-message-text p:last-child {
     margin-bottom: 0;
 }
@@ -150,19 +179,17 @@
 }
 
 .main-input-container {
-    position: absolute;
+    position: fixed;
     left: 50%;
-    top: 40%;
-    transform: translate(-50%, -50%);
+    bottom: 18px;
+    transform: translateX(-50%);
     width: 50%;
     max-width: 728px;
     z-index: 30;
 }
 
 .main-input-container.docked {
-    top: auto;
-    bottom: 18px;
-    transform: translate(-50%, 0);
+    transform: translateX(-50%);
 }
 
 .main-cards {
@@ -197,7 +224,7 @@
     }
 
     .main-history {
-        padding: 120px 16px 290px;
+        padding: 120px 16px 0;
     }
 }
 
@@ -206,5 +233,60 @@
 }
 
 .main-page.after-first .main-history {
-    padding-bottom: 260px;
+    padding-bottom: calc(var(--main-chat-height, 0px) + 36px);
+}
+
+.main-page.before-first .main-history {
+    pointer-events: none;
+    z-index: 0;
+}
+
+.main-page.before-first .main-cards {
+    z-index: 40;
+}
+
+.main-page.before-first {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding-top: 110px;
+    box-sizing: border-box;
+}
+
+.main-page.before-first .main-history {
+    display: none;
+}
+
+.main-page.before-first .main-input-container {
+    position: static;
+    left: auto;
+    bottom: auto;
+    top: auto;
+    transform: none;
+    z-index: 60;
+    order: 1;
+    margin-top: 200px;
+}
+
+.main-page.before-first .main-cards {
+    position: static;
+    left: auto;
+    top: auto;
+    transform: none;
+    z-index: 40;
+    order: 2;
+}
+
+.main-page.after-first .main-input-container {
+    position: fixed;
+    top: auto;
+    bottom: 18px;
+    transform: translateX(-50%);
+}
+
+.main-page.before-first .main-cards,
+.main-page.before-first .cap-container {
+    pointer-events: auto;
 }

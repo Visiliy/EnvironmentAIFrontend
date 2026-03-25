@@ -1,6 +1,39 @@
 import "../UX/Chat.css";
 import { useRef, useEffect, useCallback, useState } from "react";
 
+const ALLOWED_FILE_TYPES = [".txt", ".docx", ".pdf"];
+const MAX_FILES = 10;
+const MAX_FILE_BASENAME = 20;
+
+const isAllowedFile = (file) => {
+    const fallbackExt = file.name.includes(".") ? `.${file.name.split(".").pop()}` : "";
+    const fileType = (file.type || fallbackExt).toLowerCase();
+    const fileName = file.name.toLowerCase();
+    return ALLOWED_FILE_TYPES.some((type) => fileType.includes(type) || fileName.endsWith(type));
+};
+
+const getUniqueFiles = (currentFiles, selectedFiles) => {
+    const seen = new Set(currentFiles.map((file) => `${file.name}-${file.size}`));
+    const merged = [...currentFiles];
+    for (const file of selectedFiles) {
+        const key = `${file.name}-${file.size}`;
+        if (!seen.has(key)) {
+            seen.add(key);
+            merged.push(file);
+        }
+        if (merged.length >= MAX_FILES) break;
+    }
+    return merged;
+};
+
+const truncateFileName = (fileName) => {
+    const lastDotIndex = fileName.lastIndexOf(".");
+    const name = lastDotIndex !== -1 ? fileName.substring(0, lastDotIndex) : fileName;
+    const extension = lastDotIndex !== -1 ? fileName.substring(lastDotIndex) : "";
+    if (name.length <= MAX_FILE_BASENAME) return fileName;
+    return `${name.substring(0, MAX_FILE_BASENAME)}...${extension}`;
+};
+
 const Chat = ({ placeholder, onSendMessage, currentChatId }) => {
     const textareaRef = useRef(null);
     const fileInputRef = useRef(null);
@@ -28,40 +61,14 @@ const Chat = ({ placeholder, onSendMessage, currentChatId }) => {
     };
 
     const handleFileSelect = (e) => {
-        const selectedFiles = Array.from(e.target.files);
-        const allowedTypes = ['.txt', '.docx', '.pdf'];
-        
-        const validFiles = selectedFiles.filter(file => {
-            const fileType = file.type || `.${file.name.split('.').pop()}`;
-            return allowedTypes.some(type => fileType.includes(type) || file.name.endsWith(type));
-        });
-
-        const newFiles = [...files];
-        validFiles.forEach(file => {
-            const exists = files.some(f => f.name === file.name && f.size === file.size);
-            if (!exists && newFiles.length < 10) {
-                newFiles.push(file);
-            }
-        });
-        
-        setFiles(newFiles.slice(0, 10));
-        
-        fileInputRef.current.value = '';
+        const selectedFiles = Array.from(e.target.files || []);
+        const validFiles = selectedFiles.filter(isAllowedFile);
+        setFiles((prev) => getUniqueFiles(prev, validFiles));
+        if (fileInputRef.current) fileInputRef.current.value = "";
     };
 
     const removeFile = (index) => {
-        setFiles(files.filter((_, i) => i !== index));
-    };
-
-    const truncateFileName = (fileName) => {
-        const lastDotIndex = fileName.lastIndexOf('.');
-        const name = lastDotIndex !== -1 ? fileName.substring(0, lastDotIndex) : fileName;
-        const extension = lastDotIndex !== -1 ? fileName.substring(lastDotIndex) : '';
-        
-        if (name.length > 20) {
-            return name.substring(0, 20) + '...' + extension;
-        }
-        return fileName;
+        setFiles((prev) => prev.filter((_, i) => i !== index));
     };
 
     const handleSend = () => {
