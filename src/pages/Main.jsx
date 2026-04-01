@@ -78,8 +78,15 @@ const Main = () => {
                 },
             });
             historyStore.write([...historyBefore, userMessage, { ...aiMessage, text: aiText }]);
-        } catch {
-            setMessages((prev) => prev.filter((m) => m.id !== aiMessageId));
+        } catch (error) {
+            console.error("Main chat send failed:", error);
+            setMessages((prev) =>
+                prev.map((m) =>
+                    m.id === aiMessageId
+                        ? { ...m, text: `Ошибка отправки на сервер: ${error?.message ?? "Неизвестная ошибка"}` }
+                        : m
+                )
+            );
         } finally {
             setIsLoading(false);
         }

@@ -124,4 +124,4 @@ const Authorization = () => {
     );
 };
 
-export default Authorization;
+export default Authorization; 

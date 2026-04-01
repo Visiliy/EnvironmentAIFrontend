@@ -1,5 +1,5 @@
 export const MAIN_CHAT_COOKIE_KEY = "main_system_chat_history";
-export const MAIN_CHAT_API_URL = "http://localhost:5071/system/generate_sistem_messages";
+export const MAIN_CHAT_API_URL = "http://localhost:5071/system/generate_system_messages";
 
 export class ChatHistoryStore {
     constructor(cookieKey = MAIN_CHAT_COOKIE_KEY) {
@@ -66,13 +66,25 @@ export class MainChatApiClient {
         formData.append("context", context);
         files.forEach((file) => formData.append("files", file));
 
-        const response = await fetch(this.apiUrl, {
-            method: "POST",
-            body: formData,
-        });
+        let response;
+        try {
+            response = await fetch(this.apiUrl, {
+                method: "POST",
+                body: formData,
+            });
+        } catch (error) {
+            throw new Error(`Request failed for ${this.apiUrl}: ${error.message}`);
+        }
 
-        if (!response.ok || !response.body) {
-            throw new Error("Failed to fetch main chat stream");
+        if (!response.ok) {
+            const responseText = await response.text().catch(() => "");
+            throw new Error(
+                `Main chat request failed (${response.status} ${response.statusText})${responseText ? `: ${responseText}` : ""}`
+            );
+        }
+
+        if (!response.body) {
+            throw new Error("Main chat response body is empty");
         }
 
         const reader = response.body.getReader();
