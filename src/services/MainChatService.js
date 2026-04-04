@@ -1,5 +1,4 @@
 export const MAIN_CHAT_COOKIE_KEY = "main_system_chat_history";
-export const MAIN_CHAT_API_URL = "http://localhost:5071/system/generate_system_messages";
 
 export class ChatHistoryStore {
     constructor(cookieKey = MAIN_CHAT_COOKIE_KEY) {
@@ -56,8 +55,12 @@ export class MainChatMessageFactory {
 }
 
 export class MainChatApiClient {
-    constructor(apiUrl = MAIN_CHAT_API_URL) {
-        this.apiUrl = apiUrl;
+    constructor(apiUrl) {
+        this.apiUrl = apiUrl ?? MainChatApiClient.resolveApiUrl();
+    }
+
+    static resolveApiUrl() {
+        return "http://localhost:5071/system/generate_system_messages";
     }
 
     async streamMessage({ text, context, files, onChunk }) {
